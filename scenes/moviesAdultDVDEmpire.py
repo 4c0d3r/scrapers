@@ -122,6 +122,12 @@ class AdultDVDEmpireMovieSpider(BaseSceneScraper):
                 newlist.append(word)
         return newlist
 
+    def clean_site(self, site):
+       if site == 'All Her Luv (allherluv)':
+          site = 'All Her Luv'
+       # There are 37 others sites with parens, not sure what's best for them.
+       return site
+    
     def parse_movie(self, response):
         item = SceneItem()
 
@@ -139,7 +145,7 @@ class AdultDVDEmpireMovieSpider(BaseSceneScraper):
         item['id'] = self.get_id(response)
         item['trailer'] = self.get_trailer(response)
         item['network'] = "Adult DVD Empire"
-        item['site'] = self.get_studio(response)
+        item['site'] = self.clean_site(self.get_studio(response))
         item['parent'] = self.get_studio(response)
         item['director'] = self.get_director(response)
         item['format'] = self.get_format(response)
